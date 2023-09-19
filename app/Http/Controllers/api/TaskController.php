@@ -12,19 +12,11 @@ class TaskController extends Controller
     {
     }
 
-    public function create()
-    {
-    }
-
-    public function store(Request $request)
-    {
-    }
-
     public function show($id)
     {
     }
 
-    public function edit($id)
+    public function store(Request $request)
     {
     }
 
