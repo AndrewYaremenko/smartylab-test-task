@@ -14,7 +14,7 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             DB::table('tasks')->insert([
                 'title' => 'Task ' . $i,
                 'description' => 'Some description ' . $i,

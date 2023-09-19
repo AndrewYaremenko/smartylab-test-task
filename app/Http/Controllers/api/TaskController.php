@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\api\TaskRequestStore;
 use App\Http\Requests\api\TaskRequestUpdate;
@@ -9,43 +11,65 @@ use App\Models\Task;
 use App\Http\Resources\api\TaskResource;
 use App\Http\Resources\api\TaskListResource;
 
-    class TaskController extends Controller
+class TaskController extends Controller
+{
+    public function index()
     {
-        public function index()
-        {
+        try {
             $tasks = Task::all();
             return new TaskListResource($tasks);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
 
     public function show($id)
     {
-        $task = Task::findOrFail($id);
-        return new TaskResource($task);
+        try {
+            $task = Task::findOrFail($id);
+            return new TaskResource($task);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Task not found'], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function store(TaskRequestStore $request)
     {
-        $data = $request->validated();
-        $task = Task::create($data);
-
-        return new TaskResource($task);
+        try {
+            $data = $request->validated();
+            $task = Task::create($data);
+            return new TaskResource($task);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function update(TaskRequestUpdate $request, $id)
     {
-        $data = $request->validated();
-        $task = Task::findOrFail($id);
-
-        $task->update($data);
-
-        return new TaskResource($task);
+        try {
+            $data = $request->validated();
+            $task = Task::findOrFail($id);
+            $task->update($data);
+            return new TaskResource($task);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Task not found'], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function destroy($id)
     {
-        $task = Task::findOrFail($id);
-        $task->delete();
-
-        return response()->json(['message' => 'Task has been deleted']);
+        try {
+            $task = Task::findOrFail($id);
+            $task->delete();
+            return response()->json(['message' => 'Task has been deleted']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Task not found'], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
