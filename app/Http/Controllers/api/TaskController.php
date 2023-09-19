@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -13,10 +14,28 @@ use App\Http\Resources\api\TaskListResource;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $tasks = Task::all();
+            $query = Task::query();
+    
+            if ($request->has('completed')) {
+                $completed = $request->boolean('completed');
+                $query->where('completed', $completed);
+            }
+    
+            if ($request->has('endDate')) {
+                $endDate = $request->input('endDate');
+                $query->whereDate('endDate', '=', $endDate);
+            }
+    
+            if ($request->has('sort') && in_array($request->input('sort'), ['asc', 'desc'])) {
+                $sortDirection = $request->input('sort');
+                $query->orderBy('endDate', $sortDirection);
+            }
+    
+            $tasks = $query->get();
+    
             return new TaskListResource($tasks);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
