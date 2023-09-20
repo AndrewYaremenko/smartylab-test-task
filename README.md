@@ -6,7 +6,8 @@
 **Token TTL - 24h**
 
 Пример запроса
-```
+
+<pre>
 POST /api/auth/register HTTP/1.1
 Host: localhost:8000
 Content-Type: application/json
@@ -15,39 +16,50 @@ Content-Type: application/json
     "email": "Test@gmail.com",
     "password": "qwerty"
 }
-```
+</pre>
+
 <br>
+
 **POST /api/auth/register** - register
-```
+
+<pre>
 {
     "name": string,
     "email": string|email,
     "password":  string|min:6
 }
-```
+</pre>
+
 Пример ответа
-```
+
+<pre>
 {
     "token": string
 }
-```
+</pre>
+
 **POST /api/auth/login** - login
-```
+
+<pre>
 {
     "email": string,
     "password":  string
 }
-```
+</pre>
+
 Пример ответа
-```
+
+<pre>
 {
     "token": string
 }
-```
+</pre>
+
 <br><br>
 ### Tasks
 Пример запроса
-```
+
+<pre>
 POST /api/tasks/ HTTP/1.1
 Host: localhost:8000
 Content-Type: application/json
@@ -59,21 +71,27 @@ Authorization: Bearer {token}
     "endDate": "2023-05-21",
     "completed": false
 }
-```
+</pre>
+
 **GET /api/tasks** - index
 параметры
-```
+
+<pre>
 completed=boolean
 endDate=date(Y-m-d)
 sort=asc||desc
-```
+</pre>
+
 Примеры запросов
-```
+
+<pre>
 http://localhost:8000/api/tasks?completed=true&sort=asc
 http://localhost:8000/api/tasks/?endDate=2023-09-23
-```
+</pre>
+
 Пример ответа
-```
+
+<pre>
 {
     "data": [
         {
@@ -86,10 +104,12 @@ http://localhost:8000/api/tasks/?endDate=2023-09-23
 		...
 	]
 }
-```
+</pre>
+
 **GET /api/tasks/{id}**  - show<br>
 Пример ответа
-```
+
+<pre>
 {
     "data": {
             "id": int,
@@ -99,27 +119,33 @@ http://localhost:8000/api/tasks/?endDate=2023-09-23
             "completed": boolean
 	}
 }
-```
+</pre>
+
 **POST /api/tasks** - store
-```
+
+<pre>
 {
     "title": string:required,
     "description": string:required,
     "endDate": string(Y-m-d):required,
     "completed": boolean
 }
-```
+</pre>
+
 Пример запроса
-```
+
+<pre>
 {
     "title": "Some task",
     "description": "Some task",
     "endDate": "2023-05-21",
     "completed": false
 }
-```
+</pre>
+
 Пример ответа
-```
+
+<pre>
 {
     "data": {
             "id": int,
@@ -129,27 +155,33 @@ http://localhost:8000/api/tasks/?endDate=2023-09-23
             "completed": boolean
 	}
 }
-```
+</pre>
+
 **PUT /api/tasks/{id}** - update
-```
+
+<pre>
 {
     "title": string:required,
     "description": string:required,
     "endDate": string(Y-m-d):required,
     "completed": boolean
 }
-```
+</pre>
+
 Пример запроса
-```
+
+<pre>
 {
     "title": "Updated some task",
     "description": "Updated some task",
     "endDate": "2023-09-02",
     "completed": true
 }
-```
+</pre>
+
 Пример ответа
-```
+
+<pre>
 {
     "data": {
             "id": int,
@@ -159,14 +191,16 @@ http://localhost:8000/api/tasks/?endDate=2023-09-23
             "completed": boolean
 	}
 }
-```
+</pre>
+
 **DELETE /api/tasks/{id}** - destroy<br>
 Пример ответа
-```
+
+<pre>
 {
     "message": "Task has been deleted"
 }
-```
+</pre>
 
 ## Установка
 
