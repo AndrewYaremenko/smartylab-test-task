@@ -18,24 +18,27 @@ class TaskController extends Controller
     {
         try {
             $query = Task::query();
-    
+
             if ($request->has('completed')) {
                 $completed = $request->boolean('completed');
                 $query->where('completed', $completed);
             }
-    
+
             if ($request->has('endDate')) {
                 $endDate = $request->input('endDate');
-                $query->whereDate('endDate', '=', $endDate);
+
+                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+                    $query->whereDate('endDate', '=', $endDate);
+                }
             }
-    
+
             if ($request->has('sort') && in_array($request->input('sort'), ['asc', 'desc'])) {
                 $sortDirection = $request->input('sort');
                 $query->orderBy('endDate', $sortDirection);
             }
-    
+
             $tasks = $query->get();
-    
+
             return new TaskListResource($tasks);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);

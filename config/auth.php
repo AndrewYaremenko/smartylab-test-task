@@ -43,7 +43,8 @@ return [
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
-            'hash' => false
+            'hash' => false,
+            'expire_in' => 1440,
         ]
     ],
 
