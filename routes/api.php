@@ -14,13 +14,15 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+});
 
+Route::middleware('auth.api.json')->group(function () {
     Route::prefix('tasks')->group(function () {
-        Route::get('/', [TaskController::class, "index"]);
-        Route::get('{id}', [TaskController::class, "show"]);
-        Route::post('/', [TaskController::class, "store"]);
-        Route::put('{id}', [TaskController::class, "update"]);
-        Route::delete('{id}', [TaskController::class, "destroy"]);
+        Route::get('/', [TaskController::class, "index"])->name('index');
+        Route::get('{id}', [TaskController::class, "show"])->name('show');
+        Route::post('/', [TaskController::class, "store"])->name('store');
+        Route::put('{id}', [TaskController::class, "update"])->name('update');
+        Route::delete('{id}', [TaskController::class, "destroy"])->name('destroy');
     });
 });
 

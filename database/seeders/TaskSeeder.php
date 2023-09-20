@@ -14,12 +14,14 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             DB::table('tasks')->insert([
                 'title' => 'Task ' . $i,
                 'description' => 'Some description ' . $i,
                 'endDate' => now()->addDays($i),
-                'completed' => rand(0, 1)
+                'completed' => rand(0, 1),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }
